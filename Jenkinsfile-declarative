@@ -1,0 +1,30 @@
+pipeline {
+    agent { label 'agent3' }
+
+    stages {
+        stage('Get code') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('build java app') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('build image') {
+            steps {
+                sh 'docker build -t java-app:latest .'
+            }
+        }
+
+        stage('deploy') {
+            steps {
+                sh 'docker rm -f java-running || true'
+                sh 'docker run -d -p 8090:8090 --name java-running java-app:latest'
+            }
+        }
+    }
+}
