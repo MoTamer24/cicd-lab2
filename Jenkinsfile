@@ -8,4 +8,7 @@ node ('agent3-docker'){
     stage('build image') {
     sh 'docker build -t java-app:latest .'
     }
+    stage('deploy'){
+        sh 'docker run -d --name java-running java-app:latest'
+    }
 }
