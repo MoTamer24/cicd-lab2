@@ -18,7 +18,7 @@ node ('agent3-docker'){
         }
     }
     stage('deploy image '){
-        sh 'docker push java-app:latest'
+        sh 'docker push motamerf/java-app:latest'
     }
     stage('deploy'){
         sh 'docker rm -f java-running || true'
