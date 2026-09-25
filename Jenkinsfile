@@ -10,6 +10,6 @@ node ('agent3-docker'){
     }
     stage('deploy'){
         sh 'docker rm -f java-running || true'
-        sh 'docker run -d --name java-running java-app:latest'
+        sh 'docker run -d -p 8090:8090 --name java-running java-app:latest'
     }
 }
