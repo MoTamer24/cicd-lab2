@@ -1,0 +1,41 @@
+name: depi_pipline
+
+on: workflow_dispatch
+
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+  
+jobs:
+  java_app_CI:
+    runs-on: ubuntu-latest
+    environment: Mohamed_Tamer_Abdo_Farh
+    steps:
+    - name: get code
+      uses: actions/checkout@v4
+      
+    - name: set_up_java11
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: build the app
+      run: mvn clean package
+      
+    - name: move to artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: java_output
+        path: target/*.jar
+        
+    - name: docker login 
+      run: docker login -u ${{secrets.docker_username}} -p ${{secrets.docker_pass}}
+
+    - name: docker image build
+      run : docker build -t motamerf/java-app:latest .
+    - name: docker push image
+      run: docker push motamerf/java-app:latest
+      
+          
+        
