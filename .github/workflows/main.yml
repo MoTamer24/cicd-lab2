@@ -30,7 +30,7 @@ jobs:
         path: target/*.jar
         
     - name: docker login 
-      run: docker login -u ${{secrets.docker_username}} -p ${{secrets.docker_pass}}
+      run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASS}}
 
     - name: docker image build
       run : docker build -t motamerf/java-app:latest .
